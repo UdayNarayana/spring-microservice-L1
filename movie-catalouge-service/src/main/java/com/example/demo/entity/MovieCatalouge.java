@@ -6,12 +6,14 @@ public class MovieCatalouge {
 
     private String movie;
     private int rating;
+    private String desc;
 
     public MovieCatalouge(){}
 
-    public MovieCatalouge(String movie, int rating) {
+    public MovieCatalouge(String movie, int rating, String desc) {
         this.movie = movie;
         this.rating = rating;
+        this.desc = desc;
     }
 
     public String getMovie() {
@@ -28,5 +30,13 @@ public class MovieCatalouge {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

@@ -5,14 +5,12 @@ import java.util.List;
 public class MovieRating {
     private int movieId;
     private int rating;
-    private List<MovieRating> ratingList;
 
     public MovieRating(){}
 
-    public MovieRating(int movieId, int rating, List<MovieRating> ratingList) {
+    public MovieRating(int movieId, int rating) {
         this.movieId = movieId;
         this.rating = rating;
-        this.ratingList = ratingList;
     }
 
     public int getMovieId() {
@@ -29,13 +27,5 @@ public class MovieRating {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public List<MovieRating> getRatingList() {
-        return ratingList;
-    }
-
-    public void setRatingList(List<MovieRating> ratingList) {
-        this.ratingList = ratingList;
     }
 }

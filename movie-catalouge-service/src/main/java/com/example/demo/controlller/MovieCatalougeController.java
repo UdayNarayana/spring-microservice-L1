@@ -4,6 +4,9 @@ import com.example.demo.entity.Movie;
 import com.example.demo.entity.MovieCatalouge;
 import com.example.demo.entity.MovieRating;
 import com.example.demo.entity.UserRating;
+import com.example.demo.services.MovieCatalougeService;
+import com.example.demo.services.UserRatingService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.netty.resolver.DefaultAddressResolverGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -33,9 +36,16 @@ public class MovieCatalougeController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private MovieCatalougeService movieCatalougeService;
+
+    @Autowired
+    private UserRatingService userRatingService;
+
     @GetMapping("/{userId}")
+
     public List<MovieCatalouge> listMovieCatalouges(@PathVariable("userId") String userId){
-        UserRating ratings = restTemplate.getForObject("http://MOVIE-RATING-SERVICE/rating/"+userId, UserRating.class);
+
 //        UserRating ratings = builder
 //                .get()
 //                .uri("http://MOVIE-RATING-SERVICE/rating/"+userId)
@@ -43,12 +53,18 @@ public class MovieCatalougeController {
 //                .bodyToMono(UserRating.class)
 //                .block();
 
+        UserRating ratings = userRatingService.getUserRatings(userId);
+
        return ratings.getRatings().stream().map(rating->{
-            Movie movie = restTemplate.getForObject("http://MOVIE-INFO-SERVICE/movie-info/"+rating.getMovieId(),Movie.class);
-            return new MovieCatalouge(movie.getMovieName(), rating.getRating());
+            Movie movie = movieCatalougeService.getMovieCatalouge(rating.getMovieId());
+            return new MovieCatalouge(movie.getMovieName(), rating.getRating(), movie.getDesc());
         }).collect(Collectors.toList());
 
 
+    }
+
+    public List<MovieCatalouge> getFallbackCataloge(@PathVariable("userId") String userId){
+        return Arrays.asList(new MovieCatalouge("N/A",0,"N/A"));
     }
 
 

@@ -18,8 +18,8 @@ public class MovieRatingController {
     public UserRating getMovieRating(@PathVariable("userId") String userId){
 
         List<MovieRating> movieRatings = Arrays.asList(
-                new MovieRating(1234,5),
-                new MovieRating(5678,4)
+                new MovieRating(100,5),
+                new MovieRating(200,4)
         );
         UserRating userRating = new UserRating();
         userRating.setRatings(movieRatings);
